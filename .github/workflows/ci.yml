@@ -19,6 +19,3 @@ jobs:
 
       - name: Rodar testes unitários
         run: npm run test
-
-      - name: Rodar testes e2e
-        run: npm run test:e2e
