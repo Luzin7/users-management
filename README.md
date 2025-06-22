@@ -138,6 +138,19 @@ src/
 
 ## Decisões de Design e Arquitetura
 
+### Criação do primeiro usuário administrador
+
+### Criação do primeiro usuário administrador
+
+O enunciado do desafio não especifica como deve ser criado o primeiro usuário com papel de administrador. Por isso, para viabilizar a entrega, implementei a seguinte regra provisória:
+
+- O **primeiro usuário cadastrado** no sistema recebe automaticamente o papel de **admin**.
+- Todos os usuários criados posteriormente recebem o papel de **usuário comum**.
+
+> **Atenção:**  
+> Essa decisão é provisória e deve ser validada conforme a necessidade real do projeto.  
+> Em um cenário real, o correto seria alinhar esse fluxo com o cliente antes da implementação, pois trata-se de uma decisão de negócio sensível do ponto de vista de segurança.
+
 - **TypeScript**: Escolhido para maior segurança e produtividade no desenvolvimento.
 - **Express.js**: Framework minimalista, flexível e amplamente utilizado.
 - **Prisma**: ORM moderna para facilitar a manipulação do banco de dados, desenvolvimento e garantir portabilidade.
