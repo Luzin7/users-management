@@ -7,7 +7,12 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Roles } from '@providers/auth/decorators/roles.decorator';
 import { RolesGuard } from '@providers/auth/guards/roles.guard';
 import { Role } from '@providers/auth/roles';
@@ -26,7 +31,38 @@ export class ListInactivesUsersController {
 
   @Get('inactives')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'List inactives users with pagination' })
+  @ApiOperation({ summary: 'Lista usuários inativos com paginação' })
+  @ApiQuery({
+    name: 'page',
+    required: true,
+    type: Number,
+    description: 'Número da página para paginação',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: true,
+    type: Number,
+    description: 'Quantidade de usuários por página',
+    example: 10,
+  })
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        users: { type: 'array', items: { $ref: '#/components/schemas/User' } },
+        total: { type: 'number' },
+        pagination: {
+          type: 'object',
+          properties: {
+            page: { type: 'number' },
+            limit: { type: 'number' },
+            totalPages: { type: 'number' },
+          },
+        },
+      },
+    },
+  })
   async handle(@Query() query: ListUsersQueryDto) {
     const result = await this.listInactivesUsersService.execute({
       pagination: {
