@@ -1,0 +1,59 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ListUsersService = void 0;
+const common_1 = require("@nestjs/common");
+const Either_1 = require("../../../shared/core/errors/Either");
+const ParameterError_1 = require("../../../shared/errors/ParameterError");
+const UserRepository_1 = require("../repositories/contracts/UserRepository");
+let ListUsersService = class ListUsersService {
+    userRepository;
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async execute({ filters, sorting, pagination, }) {
+        if (pagination.page < 1) {
+            return (0, Either_1.left)(new ParameterError_1.ParameterError('Filtro de página inválido'));
+        }
+        if (pagination.limit < 1 || pagination.limit > 100) {
+            return (0, Either_1.left)(new ParameterError_1.ParameterError('Limite de resultados inválido'));
+        }
+        const { users, total } = await this.userRepository.findMany(Number(pagination.page), Number(pagination.limit), filters, sorting);
+        const usersWithStatus = users.map((user) => {
+            return {
+                ...user,
+                status: this.calculateUserStatus(user),
+            };
+        });
+        const totalPages = Math.ceil(total / pagination.limit);
+        return (0, Either_1.right)({
+            users: usersWithStatus,
+            total,
+            pagination: {
+                page: pagination.page,
+                limit: pagination.limit,
+                totalPages,
+            },
+        });
+    }
+    calculateUserStatus(user) {
+        if (!user.lastLoginAt)
+            return 'inactive';
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        return user.lastLoginAt > thirtyDaysAgo ? 'active' : 'inactive';
+    }
+};
+exports.ListUsersService = ListUsersService;
+exports.ListUsersService = ListUsersService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [UserRepository_1.UserRepository])
+], ListUsersService);
