@@ -24,10 +24,9 @@ export class ListUsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'List users with pagination and filters' })
+  @ApiOperation({ summary: 'Lista usuários com paginação' })
   @ApiResponse({
     status: 200,
-    description: 'Users retrieved successfully',
     schema: {
       type: 'object',
       properties: {
