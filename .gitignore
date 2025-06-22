@@ -163,6 +163,7 @@ dist
 .vscode-test
 
 .vscode\*
+.vscode
 
 # yarn v2
 
