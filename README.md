@@ -1,4 +1,4 @@
-Este projeto é uma API backend desenvolvida como parte de um teste técnico para a Conéctar. O objetivo é fornecer uma base sólida, escalável e de fácil manutenção, seguindo boas práticas de desenvolvimento.
+Este projeto é uma API backend desenvolvida como parte de um teste técnico. O objetivo é fornecer uma base sólida, escalável e de fácil manutenção, seguindo boas práticas de desenvolvimento.
 
 ## Índice
 
